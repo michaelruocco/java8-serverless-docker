@@ -4,7 +4,7 @@ RUN apk update
 RUN apk add bash
 RUN apk add wget
 RUN apk add --update nodejs
-RUN npm install serverless -g
+RUN npm install serverless@1.11.0 -g
 
 ENV JAVA_VERSION_MAJOR=8 \
     JAVA_VERSION_MINOR=121 \
@@ -15,7 +15,7 @@ ENV JAVA_VERSION_MAJOR=8 \
     PATH=${PATH}:/opt/jdk/bin \
     GLIBC_VERSION=2.23-r3 \
     LANG=C.UTF-8
-    
+
 RUN set -ex && \
     apk upgrade --update && \
     apk add --update libstdc++ curl ca-certificates bash && \

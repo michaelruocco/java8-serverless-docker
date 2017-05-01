@@ -10,11 +10,17 @@ versions installed:
 * java: 1.8.0_121
 * node: v6.9.2
 * npm: v3.10.8
-* serverless: 1.12.1
+* serverless: 1.11.0
 
 The image is also available on dockerhub, you can pull it by running the
 following command:
 
 ```
 docker pull michaelruocco/alpine-java8-serverless
+```
+
+To run an container using the image you can run the following:
+
+```
+docker run -it michaelruocco/alpine-java8-serverless /bin/bash
 ```
