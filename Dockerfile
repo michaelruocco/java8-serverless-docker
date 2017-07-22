@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.6
 
 # Java Version and other ENV
 ENV JAVA_VERSION_MAJOR=8 \
@@ -74,5 +74,5 @@ ENV JAVA_HOME /opt/jdk
 ENV PATH ${PATH}:${JAVA_HOME}/bin
 
 RUN apk update
-RUN apk add nodejs
+RUN apk add nodejs-npm
 RUN npm install -g serverless
