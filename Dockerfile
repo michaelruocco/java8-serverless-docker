@@ -1,14 +1,9 @@
-FROM alpine:latest
+FROM alpine:3.4
 
-RUN apk update
-RUN apk add bash
-RUN apk add wget
-RUN apk add --update nodejs
-RUN npm install serverless@1.11.0 -g
-
+# Java Version and other ENV
 ENV JAVA_VERSION_MAJOR=8 \
-    JAVA_VERSION_MINOR=121 \
-    JAVA_VERSION_BUILD=13 \
+    JAVA_VERSION_MINOR=131 \
+    JAVA_VERSION_BUILD=11 \
     JAVA_PACKAGE=jdk \
     JAVA_JCE=standard \
     JAVA_HOME=/opt/jdk \
@@ -16,6 +11,7 @@ ENV JAVA_VERSION_MAJOR=8 \
     GLIBC_VERSION=2.23-r3 \
     LANG=C.UTF-8
 
+# do all in one step
 RUN set -ex && \
     apk upgrade --update && \
     apk add --update libstdc++ curl ca-certificates bash && \
@@ -27,7 +23,7 @@ RUN set -ex && \
     /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib && \
     mkdir /opt && \
     curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/java.tar.gz \
-      http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/e9e7ea248e2c4826b92b3f075a80e441/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz && \
+      http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/d54c1d3a095b4ff2b6607d096fa80163/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz && \
     gunzip /tmp/java.tar.gz && \
     tar -C /opt -xf /tmp/java.tar && \
     ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /opt/jdk && \
@@ -72,3 +68,11 @@ RUN set -ex && \
            /opt/jdk/jre/lib/plugin.jar \
            /tmp/* /var/cache/apk/* && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
+
+# Set environment
+ENV JAVA_HOME /opt/jdk
+ENV PATH ${PATH}:${JAVA_HOME}/bin
+
+RUN apk update
+RUN apk add nodejs
+RUN npm install -g serverless
